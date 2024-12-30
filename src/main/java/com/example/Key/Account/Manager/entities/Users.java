@@ -11,7 +11,8 @@ import java.sql.Timestamp;
 @Entity
 @Getter
 @Setter
-@Table(name = "kam.users")
+@Table(name = "users", schema = "kam")
+//@Table(name = "kam.users")
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
