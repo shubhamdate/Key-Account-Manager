@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@Table(name = "kam.call_schedule")
+@Table(name = "call_schedule", schema = "kam")
 public class CallSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class CallSchedule {
 
     @ManyToOne
     @JoinColumn(name = "lead_id", nullable = false)
-    private CallSchedule callSchedule;
+    private Leads lead;
 
     @Column(name = "call_frequency")
     private Integer callFrequency;

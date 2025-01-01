@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Entity
 @Getter
 @Setter
-@Table(name = "kam.leads")
+@Table(name = "leads", schema = "kam")
 public class Leads {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Leads {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
