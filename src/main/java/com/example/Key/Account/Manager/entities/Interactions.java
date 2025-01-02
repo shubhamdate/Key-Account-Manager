@@ -3,7 +3,7 @@ package com.example.Key.Account.Manager.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -30,7 +30,7 @@ public class Interactions {
     @Column(name = "interaction_date")
     private LocalDate interactionDate;
 
-    @CreationTimestamp
-    @Column(name = "created_at")
+    @UpdateTimestamp
+    @Column(name = "updated_at")
     private Timestamp createdAt;
 }

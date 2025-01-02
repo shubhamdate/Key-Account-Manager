@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/contacts")
+@RequestMapping("/api/contact")
 public class ContactController {
 
     private final ContactService contactService;
@@ -26,7 +26,7 @@ public class ContactController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{leadId}")
+    @GetMapping
     public ResponseEntity<ApiResponse> getAllContacts(@PathVariable Long leadId) {
         ApiResponse response = contactService.getAllContactsByLeadId(leadId);
         return ResponseEntity.ok(response);

@@ -28,6 +28,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Transactional
     public ApiResponse createContact(CreateContactRequestDto requestDto) {
+
         Optional<Leads> lead = leadsRepository.findById(requestDto.getLeadId());
         if (lead.isEmpty()) {
             return new ApiResponse("error", null, "Lead not found");
@@ -40,6 +41,7 @@ public class ContactServiceImpl implements ContactService {
         contact.setEmail(requestDto.getEmail());
         contact.setLead(lead.get());
         contactRepository.save(contact);
+
         return new ApiResponse("success", null, "Contact created successfully");
     }
 

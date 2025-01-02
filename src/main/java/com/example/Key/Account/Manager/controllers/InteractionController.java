@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/interactions")
+@RequestMapping("/api/interaction")
 public class InteractionController {
 
     private final InteractionService interactionService;
@@ -32,7 +32,7 @@ public class InteractionController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse> updateInteraction(@PathVariable Long id, @RequestBody UpdateInteractionRequestDto request) {
         ApiResponse response = interactionService.updateInteraction(id, request);
         return ResponseEntity.ok(response);

@@ -1,6 +1,7 @@
 package com.example.Key.Account.Manager.controllers;
 
 import com.example.Key.Account.Manager.dto.ApiResponse;
+import com.example.Key.Account.Manager.dto.CreateCallPlanRequestDto;
 import com.example.Key.Account.Manager.services.CallPlanningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,12 @@ public class CallPlanningController {
     @Autowired
     public CallPlanningController(CallPlanningService callPlanningService) {
         this.callPlanningService = callPlanningService;
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse> createCallPlan(@RequestBody CreateCallPlanRequestDto requestDto) {
+        ApiResponse response = callPlanningService.createCallPlan(requestDto);
+        return ResponseEntity.status(201).body(response);
     }
 
     @GetMapping("/today")
