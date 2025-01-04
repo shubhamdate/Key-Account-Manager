@@ -3,6 +3,7 @@ package com.example.Key.Account.Manager.controllers;
 import com.example.Key.Account.Manager.dto.ApiResponse;
 import com.example.Key.Account.Manager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +22,31 @@ public class UserController {
 //    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> getAllUsers() {
         ApiResponse response = userService.getAllUsers();
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable Long id) {
         ApiResponse response = userService.getUserById(id);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
 //    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long id) {
         ApiResponse response = userService.deleteUser(id);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

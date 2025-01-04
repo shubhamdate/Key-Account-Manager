@@ -9,7 +9,6 @@ import com.example.Key.Account.Manager.repository.ContactsRepository;
 import com.example.Key.Account.Manager.repository.LeadsRepository;
 import com.example.Key.Account.Manager.services.ContactService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +47,10 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public ApiResponse getAllContactsByLeadId(Long leadId) {
         List<Contacts> contacts = contactRepository.findByLead_Id(leadId);
+        if (contacts.isEmpty()) {
+            return new ApiResponse("error", null, "Contact not found");
+        }
+
         return new ApiResponse("success", contacts, null);
     }
 

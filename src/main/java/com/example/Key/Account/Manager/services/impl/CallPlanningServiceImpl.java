@@ -45,13 +45,13 @@ public class CallPlanningServiceImpl implements CallPlanningService {
         schedule.setLead(lead);
         schedule.setCallFrequency(requestDto.getCallFrequency());
         schedule.setNextCallDate(nextCallDate);
-
+        schedule.setLastCallDate(nextCallDate);
         callScheduleRepository.save(schedule);
 
         return new ApiResponse("success", null, "Call plan created successfully");
     }
 
-    @Override
+    @Transactional
     public ApiResponse getTodayCallPlans() {
         LocalDate today = LocalDate.now();
         List<CallSchedule> schedules = callScheduleRepository.findByNextCallDate(today);
@@ -59,23 +59,19 @@ public class CallPlanningServiceImpl implements CallPlanningService {
     }
 
     @Transactional
-    @Override
     public ApiResponse updateCallFrequency(Long leadId, int frequencyInDays) {
         Optional<CallSchedule> scheduleOpt = callScheduleRepository.findByLead_Id(leadId);
         if (scheduleOpt.isEmpty()) {
             return new ApiResponse("error", null, "Call schedule not found for this lead");
         }
 
-        CallSchedule schedule = scheduleOpt.get();
-        schedule.setCallFrequency(frequencyInDays);
-        schedule.setNextCallDate(schedule.getLastCallDate().plusDays(frequencyInDays));
+        scheduleOpt.get().setCallFrequency(frequencyInDays);
 
-        callScheduleRepository.save(schedule);
+        scheduleOpt.ifPresent(callScheduleRepository::save);
         return new ApiResponse("success", null, "Call frequency updated successfully");
     }
 
     @Transactional
-    @Override
     public ApiResponse updateLastCallDetails(Long leadId, String lastCallDate) {
         Optional<CallSchedule> scheduleOpt = callScheduleRepository.findByLead_Id(leadId);
         if (scheduleOpt.isEmpty()) {

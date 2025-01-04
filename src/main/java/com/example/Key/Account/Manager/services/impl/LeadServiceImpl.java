@@ -34,15 +34,13 @@ public class LeadServiceImpl implements LeadService {
         if(users.isEmpty()){
             return new ApiResponse("error", null, "user not found");
         }
-        System.out.println("user is"+ users.get());
+
         Leads lead = new Leads();
         lead.setName(requestDto.getName());
         lead.setAddress(requestDto.getAddress());
         lead.setStatus(requestDto.getStatus());
         lead.setUser(users.get());
-        System.out.println("we are here");
         leadRepository.save(lead);
-        System.out.println("we not are here");
 
         return new ApiResponse("success", null, "Lead Created Successfully");
     }
@@ -66,8 +64,12 @@ public class LeadServiceImpl implements LeadService {
     @Transactional
     public ApiResponse getLeadById(Long id) {
 
-        Leads lead = leadRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Lead not found"));
+        Optional<Leads> lead = leadRepository.findById(id);
+
+        if(lead.isEmpty()){
+            return new ApiResponse("error", lead, "Data not Found");
+        }
+
         return new ApiResponse("success", lead, null);
     }
 

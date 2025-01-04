@@ -23,24 +23,40 @@ public class InteractionController {
     @PostMapping
     public ResponseEntity<ApiResponse> createInteraction(@RequestBody CreateInteractionRequestDto request) {
         ApiResponse response = interactionService.createInteraction(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/{leadId}")
     public ResponseEntity<ApiResponse> getAllInteractionsByLeadId(@PathVariable Long leadId) {
         ApiResponse response = interactionService.getAllInteractionsByLeadId(leadId);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse> updateInteraction(@PathVariable Long id, @RequestBody UpdateInteractionRequestDto request) {
         ApiResponse response = interactionService.updateInteraction(id, request);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteInteraction(@PathVariable Long id) {
         ApiResponse response = interactionService.deleteInteraction(id);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

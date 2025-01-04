@@ -22,28 +22,44 @@ public class LeadController {
 
     @PostMapping
     public ResponseEntity<ApiResponse> createLead(@RequestBody CreateLeadRequestDto requestDto) {
-        ApiResponse apiResponse = leadService.createLead(requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+        ApiResponse response = leadService.createLead(requestDto);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAllLeads(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Long assignedTo) {
-        ApiResponse apiResponse = leadService.getAllLeads(status, assignedTo);
-        return ResponseEntity.ok(apiResponse);
+        ApiResponse response = leadService.getAllLeads(status, assignedTo);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getLeadById(@PathVariable Long id) {
-        ApiResponse apiResponse = leadService.getLeadById(id);
-        return ResponseEntity.ok(apiResponse);
+        ApiResponse response = leadService.getLeadById(id);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse> updateLead(@PathVariable Long id, @RequestBody UpdateLeadRequestDto request) {
-        ApiResponse apiResponse = leadService.updateLead(id, request);
-        return ResponseEntity.ok(apiResponse);
+        ApiResponse response = leadService.updateLead(id, request);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
 

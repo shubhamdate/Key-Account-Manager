@@ -4,6 +4,7 @@ import com.example.Key.Account.Manager.dto.ApiResponse;
 import com.example.Key.Account.Manager.dto.CreateCallPlanRequestDto;
 import com.example.Key.Account.Manager.services.CallPlanningService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,28 +22,44 @@ public class CallPlanningController {
     @PostMapping
     public ResponseEntity<ApiResponse> createCallPlan(@RequestBody CreateCallPlanRequestDto requestDto) {
         ApiResponse response = callPlanningService.createCallPlan(requestDto);
-        return ResponseEntity.status(201).body(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/today")
     public ResponseEntity<ApiResponse> getTodayCallPlans() {
         ApiResponse response = callPlanningService.getTodayCallPlans();
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/{leadId}/frequency")
+    @PatchMapping("/{leadId}/frequency")
     public ResponseEntity<ApiResponse> updateCallFrequency(
             @PathVariable Long leadId,
             @RequestParam int frequencyInDays) {
         ApiResponse response = callPlanningService.updateCallFrequency(leadId, frequencyInDays);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/{leadId}/last-call")
+    @PatchMapping("/{leadId}/last-call")
     public ResponseEntity<ApiResponse> updateLastCallDetails(
             @PathVariable Long leadId,
             @RequestParam String lastCallDate) {
         ApiResponse response = callPlanningService.updateLastCallDetails(leadId, lastCallDate);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -23,24 +23,40 @@ public class ContactController {
     @PostMapping
     public ResponseEntity<ApiResponse> createContact(@RequestBody CreateContactRequestDto request) {
         ApiResponse response = contactService.createContact(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAllContacts(@PathVariable Long leadId) {
         ApiResponse response = contactService.getAllContactsByLeadId(leadId);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse> updateContact(@PathVariable Long id, @RequestBody UpdateContactRequestDto request) {
         ApiResponse response = contactService.updateContact(id, request);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteContact(@PathVariable Long id) {
         ApiResponse response = contactService.deleteContact(id);
-        return ResponseEntity.ok(response);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -5,6 +5,7 @@ import com.example.Key.Account.Manager.dto.LoginRequestDto;
 import com.example.Key.Account.Manager.dto.RegisterRequestDto;
 import com.example.Key.Account.Manager.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,12 +26,22 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> register(@RequestBody RegisterRequestDto request) {
-        return ResponseEntity.ok(authService.register(request));
+        ApiResponse response = authService.register(request);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@RequestBody LoginRequestDto request) {
-        return ResponseEntity.ok(authService.login(request));
+        ApiResponse response = authService.login(request);
+
+        if(response.getStatus().equals("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
 

@@ -40,7 +40,6 @@ public class PerformanceMetricsServiceImpl implements PerformanceMetricsService 
         metrics.setTotalRevenue(BigDecimal.valueOf(00.00));
         metrics.setAverageOrderValue(BigDecimal.valueOf(00.00));
         metrics.setLastOrderDate(null);
-
         metricsRepository.save(metrics);
 
         return new ApiResponse("success", null, "Performance metrics created successfully");
@@ -55,8 +54,11 @@ public class PerformanceMetricsServiceImpl implements PerformanceMetricsService 
 
     @Transactional
     public ApiResponse getMetricsByLeadId(Long leadId) {
-        PerformanceMetrics metrics = metricsRepository.findByLeadId(leadId)
-                .orElseThrow(() -> new RuntimeException("Performance metrics not found for this lead"));
+        Optional<PerformanceMetrics> metrics = metricsRepository.findByLeadId(leadId);
+        if(metrics.isEmpty()){
+            return new ApiResponse("error", null, "Data not Found");
+        }
+
         return new ApiResponse("success", metrics, null);
     }
 
@@ -65,15 +67,15 @@ public class PerformanceMetricsServiceImpl implements PerformanceMetricsService 
         Optional<PerformanceMetrics> metrics = metricsRepository.findByLeadId(leadId);
 
         if(metrics.isEmpty()){
-            return new ApiResponse("error", null, "Metrics not Found");
+            return new ApiResponse("error", null, "Data not Found");
         }
 
         metrics.get().setTotalOrders(metrics.get().getTotalOrders() + updateMetricsDto.getTotalOrders());
         metrics.get().setTotalRevenue(metrics.get().getTotalRevenue().add(updateMetricsDto.getTotalRevenue()));
         metrics.get().setAverageOrderValue(metrics.get().getTotalRevenue().divide(BigDecimal.valueOf(metrics.get().getTotalOrders())));
         metrics.get().setLastOrderDate(LocalDate.parse(updateMetricsDto.getLastOrderDate()));
-
         metrics.ifPresent(metricsRepository::save);
+
         return new ApiResponse("success", null, "Metrics updated successfully");
     }
 }

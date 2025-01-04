@@ -45,6 +45,9 @@ public class InteractionServiceImpl implements InteractionService {
     @Transactional
     public ApiResponse getAllInteractionsByLeadId(Long leadId) {
         List<Interactions> interactions = interactionRepository.findByLead_Id(leadId);
+        if(interactions.isEmpty()) {
+            return new ApiResponse("error", null, "Interaction not found");
+        }
         return new ApiResponse("success", interactions, null);
     }
 
