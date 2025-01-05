@@ -4,6 +4,7 @@ import com.example.Key.Account.Manager.dto.ApiResponse;
 import com.example.Key.Account.Manager.dto.CreateInteractionRequestDto;
 import com.example.Key.Account.Manager.dto.UpdateInteractionRequestDto;
 import com.example.Key.Account.Manager.services.InteractionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class InteractionController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createInteraction(@RequestBody CreateInteractionRequestDto request) {
+    public ResponseEntity<ApiResponse> createInteraction(@Valid @RequestBody CreateInteractionRequestDto request) {
         ApiResponse response = interactionService.createInteraction(request);
 
         if(response.getStatus().equals("error")) {
@@ -41,7 +42,7 @@ public class InteractionController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateInteraction(@PathVariable Long id, @RequestBody UpdateInteractionRequestDto request) {
+    public ResponseEntity<ApiResponse> updateInteraction(@PathVariable Long id,@Valid @RequestBody UpdateInteractionRequestDto request) {
         ApiResponse response = interactionService.updateInteraction(id, request);
 
         if(response.getStatus().equals("error")) {

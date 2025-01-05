@@ -4,6 +4,7 @@ import com.example.Key.Account.Manager.dto.ApiResponse;
 import com.example.Key.Account.Manager.dto.CreateContactRequestDto;
 import com.example.Key.Account.Manager.dto.UpdateContactRequestDto;
 import com.example.Key.Account.Manager.services.ContactService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class ContactController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createContact(@RequestBody CreateContactRequestDto request) {
+    public ResponseEntity<ApiResponse> createContact(@Valid @RequestBody CreateContactRequestDto request) {
         ApiResponse response = contactService.createContact(request);
 
         if(response.getStatus().equals("error")) {
@@ -30,7 +31,7 @@ public class ContactController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/{leadId}")
     public ResponseEntity<ApiResponse> getAllContacts(@PathVariable Long leadId) {
         ApiResponse response = contactService.getAllContactsByLeadId(leadId);
 
@@ -41,7 +42,7 @@ public class ContactController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateContact(@PathVariable Long id, @RequestBody UpdateContactRequestDto request) {
+    public ResponseEntity<ApiResponse> updateContact(@PathVariable Long id,@Valid @RequestBody UpdateContactRequestDto request) {
         ApiResponse response = contactService.updateContact(id, request);
 
         if(response.getStatus().equals("error")) {

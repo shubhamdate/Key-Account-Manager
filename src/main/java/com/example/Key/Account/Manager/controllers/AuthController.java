@@ -4,6 +4,7 @@ import com.example.Key.Account.Manager.dto.ApiResponse;
 import com.example.Key.Account.Manager.dto.LoginRequestDto;
 import com.example.Key.Account.Manager.dto.RegisterRequestDto;
 import com.example.Key.Account.Manager.services.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> register(@RequestBody RegisterRequestDto request) {
+    public ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterRequestDto request) {
         ApiResponse response = authService.register(request);
 
         if(response.getStatus().equals("error")) {
@@ -35,7 +36,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<ApiResponse> login(@Valid  @RequestBody LoginRequestDto request) {
         ApiResponse response = authService.login(request);
 
         if(response.getStatus().equals("error")) {

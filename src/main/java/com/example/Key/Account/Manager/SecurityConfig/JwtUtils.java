@@ -12,7 +12,6 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    //    private final String jwtSecret = "X1tZzYURX0vV7JzAa4s3GdfYk3U+9D6xDwD2PVQZhlE=";
     private final Key jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private final long jwtExpirationMs = 86400000; // 24 hours
 

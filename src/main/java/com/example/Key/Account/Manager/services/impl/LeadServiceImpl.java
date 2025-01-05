@@ -4,13 +4,16 @@ import com.example.Key.Account.Manager.dto.ApiResponse;
 import com.example.Key.Account.Manager.dto.CreateLeadRequestDto;
 import com.example.Key.Account.Manager.dto.UpdateLeadRequestDto;
 import com.example.Key.Account.Manager.entities.Leads;
+import com.example.Key.Account.Manager.entities.PerformanceMetrics;
 import com.example.Key.Account.Manager.entities.Users;
 import com.example.Key.Account.Manager.repository.LeadsRepository;
+import com.example.Key.Account.Manager.repository.PerformanceMetricsRepository;
 import com.example.Key.Account.Manager.repository.UsersRepository;
 import com.example.Key.Account.Manager.services.LeadService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +23,12 @@ public class LeadServiceImpl implements LeadService {
 
     private final UsersRepository userRepository;
     private final LeadsRepository leadRepository;
+    private final PerformanceMetricsRepository metricsRepository;
 
-    public LeadServiceImpl(UsersRepository userRepository, LeadsRepository leadRepository) {
+    public LeadServiceImpl(UsersRepository userRepository, LeadsRepository leadRepository, PerformanceMetricsRepository metricsRepository) {
         this.userRepository = userRepository;
         this.leadRepository = leadRepository;
+        this.metricsRepository = metricsRepository;
     }
 
 
@@ -41,6 +46,14 @@ public class LeadServiceImpl implements LeadService {
         lead.setStatus(requestDto.getStatus());
         lead.setUser(users.get());
         leadRepository.save(lead);
+
+        PerformanceMetrics metrics = new PerformanceMetrics();
+        metrics.setLead(lead);
+        metrics.setTotalOrders(0);
+        metrics.setTotalRevenue(BigDecimal.valueOf(00.00));
+        metrics.setAverageOrderValue(BigDecimal.valueOf(00.00));
+        metrics.setLastOrderDate(null);
+        metricsRepository.save(metrics);
 
         return new ApiResponse("success", null, "Lead Created Successfully");
     }

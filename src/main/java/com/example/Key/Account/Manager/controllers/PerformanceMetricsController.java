@@ -3,6 +3,7 @@ package com.example.Key.Account.Manager.controllers;
 import com.example.Key.Account.Manager.dto.ApiResponse;
 import com.example.Key.Account.Manager.dto.UpdatePerformanceMetricsDto;
 import com.example.Key.Account.Manager.services.PerformanceMetricsService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +53,7 @@ public class PerformanceMetricsController {
     @PatchMapping("/{leadId}")
     public ResponseEntity<ApiResponse> updatePerformanceMetrics(
             @PathVariable Long leadId,
-            @RequestBody UpdatePerformanceMetricsDto updateMetricsDto) {
+            @Valid @RequestBody UpdatePerformanceMetricsDto updateMetricsDto) {
         ApiResponse response = performanceMetricsService.updateMetrics(leadId, updateMetricsDto);
 
         if(response.getStatus().equals("error")) {

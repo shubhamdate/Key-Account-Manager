@@ -34,6 +34,7 @@ public class CallPlanningServiceImpl implements CallPlanningService {
         var lead = leadsRepository.findById(requestDto.getLeadId())
                 .orElseThrow(() -> new RuntimeException("Lead not found"));
 
+
         LocalDate nextCallDate;
         try {
             nextCallDate = requestDto.getNextCallDate();

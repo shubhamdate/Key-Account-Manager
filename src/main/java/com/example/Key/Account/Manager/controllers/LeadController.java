@@ -4,6 +4,7 @@ import com.example.Key.Account.Manager.dto.ApiResponse;
 import com.example.Key.Account.Manager.dto.CreateLeadRequestDto;
 import com.example.Key.Account.Manager.dto.UpdateLeadRequestDto;
 import com.example.Key.Account.Manager.services.LeadService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class LeadController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createLead(@RequestBody CreateLeadRequestDto requestDto) {
+    public ResponseEntity<ApiResponse> createLead(@Valid @RequestBody CreateLeadRequestDto requestDto) {
         ApiResponse response = leadService.createLead(requestDto);
 
         if(response.getStatus().equals("error")) {
@@ -34,6 +35,7 @@ public class LeadController {
     public ResponseEntity<ApiResponse> getAllLeads(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Long assignedTo) {
+
         ApiResponse response = leadService.getAllLeads(status, assignedTo);
 
         if(response.getStatus().equals("error")) {
@@ -53,7 +55,7 @@ public class LeadController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateLead(@PathVariable Long id, @RequestBody UpdateLeadRequestDto request) {
+    public ResponseEntity<ApiResponse> updateLead(@PathVariable Long id,@Valid @RequestBody UpdateLeadRequestDto request) {
         ApiResponse response = leadService.updateLead(id, request);
 
         if(response.getStatus().equals("error")) {

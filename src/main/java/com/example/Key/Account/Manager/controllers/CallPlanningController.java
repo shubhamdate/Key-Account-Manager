@@ -3,10 +3,13 @@ package com.example.Key.Account.Manager.controllers;
 import com.example.Key.Account.Manager.dto.ApiResponse;
 import com.example.Key.Account.Manager.dto.CreateCallPlanRequestDto;
 import com.example.Key.Account.Manager.services.CallPlanningService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/call-planning")
@@ -20,7 +23,7 @@ public class CallPlanningController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createCallPlan(@RequestBody CreateCallPlanRequestDto requestDto) {
+    public ResponseEntity<ApiResponse> createCallPlan(@Valid @RequestBody CreateCallPlanRequestDto requestDto) {
         ApiResponse response = callPlanningService.createCallPlan(requestDto);
 
         if(response.getStatus().equals("error")) {
@@ -54,8 +57,8 @@ public class CallPlanningController {
     @PatchMapping("/{leadId}/last-call")
     public ResponseEntity<ApiResponse> updateLastCallDetails(
             @PathVariable Long leadId,
-            @RequestParam String lastCallDate) {
-        ApiResponse response = callPlanningService.updateLastCallDetails(leadId, lastCallDate);
+            @RequestParam LocalDate lastCallDate) {
+        ApiResponse response = callPlanningService.updateLastCallDetails(leadId, String.valueOf(lastCallDate));
 
         if(response.getStatus().equals("error")) {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
